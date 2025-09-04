@@ -15,7 +15,7 @@ class TalkingCat {
             this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             this.recognition.continuous = false;
             this.recognition.interimResults = false;
-            this.recognition.lang = 'en-IN'; // Indian English
+            this.recognition.lang = 'en-IN';
 
             this.recognition.onstart = () => this.onListeningStart();
             this.recognition.onresult = (event) => this.onSpeechResult(event);
@@ -30,10 +30,9 @@ class TalkingCat {
         const micButton = document.getElementById('micButton');
         micButton.addEventListener('click', () => this.toggleListening());
 
-        // Click on cat for fun interactions
+        // ✅ Click on cat → talk + emojis
         document.getElementById('catContainer').addEventListener('click', () => {
             this.randomCatReaction();
-            this.createHearts();
         });
     }
 
@@ -42,7 +41,6 @@ class TalkingCat {
             this.showMessage("Speech recognition not supported! 😿");
             return;
         }
-
         if (this.isListening) {
             this.stopListening();
         } else {
@@ -55,7 +53,6 @@ class TalkingCat {
             this.synthesis.cancel();
             this.stopTalking();
         }
-
         try {
             this.recognition.start();
         } catch (error) {
@@ -123,14 +120,12 @@ class TalkingCat {
             return;
         }
 
-        // Keep simple words only
         let catText = "You said: " + text;
-
         const utterance = new SpeechSynthesisUtterance(catText);
-        utterance.rate = 1; // normal speed
-        utterance.pitch = 1; // normal pitch
-        utterance.volume = 1; // clear volume
-        utterance.lang = "en-IN"; // Indian English voice
+        utterance.rate = 1; 
+        utterance.pitch = 1; 
+        utterance.volume = 1; 
+        utterance.lang = "en-IN"; 
 
         utterance.onstart = () => this.startTalking();
         utterance.onend = () => this.stopTalking();
@@ -195,42 +190,51 @@ class TalkingCat {
         }, 2000);
     }
 
+    // ✅ Cat random reaction (text + voice + emojis)
     randomCatReaction() {
         const reactions = [
-            "Hello! Nice to see you.",
-            "I am very happy now.",
-            "You clicked me. Thank you!",
-            "I like talking with you.",
-            "You make me smile."
+            { msg: "Hello! Nice to see you.", emoji: "hearts" },
+            { msg: "I am very happy now.", emoji: "hearts" },
+            { msg: "You surprised me with chocolates!", emoji: "chocolates" },
+            { msg: "I feel sleepy. Bring me my pillow!", emoji: "pillow" },
+            { msg: "You clicked me. Thank you!", emoji: "hearts" },
+            { msg: "You make me smile.", emoji: "hearts" }
         ];
-        
-        const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
-        this.showMessage(randomReaction);
-        this.repeatInCatVoice(randomReaction);
+
+        const random = reactions[Math.floor(Math.random() * reactions.length)];
+        this.showMessage(random.msg);
+        this.repeatInCatVoice(random.msg);
+        this.createFloatingEmojis(random.emoji);
     }
 
-    createHearts() {
-        const heartsContainer = document.getElementById('hearts');
-        
+    // ✅ Floating emojis generator
+    createFloatingEmojis(type) {
+        const container = document.getElementById('hearts');
+        let emoji = '💕'; 
+
+        if (type === "hearts") emoji = '💕';
+        if (type === "chocolates") emoji = '🍫';
+        if (type === "pillow") emoji = '🛏️';
+
         for (let i = 0; i < 5; i++) {
             setTimeout(() => {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = '💕';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDelay = Math.random() * 1 + 's';
+                const item = document.createElement('div');
+                item.className = 'heart';
+                item.innerHTML = emoji;
+                item.style.left = Math.random() * 100 + '%';
+                item.style.animationDelay = Math.random() * 1 + 's';
                 
-                heartsContainer.appendChild(heart);
+                container.appendChild(item);
                 
                 setTimeout(() => {
-                    heart.remove();
+                    item.remove();
                 }, 3000);
             }, i * 200);
         }
     }
 }
 
-// Bottom options
+// 🔻 Bottom option functions
 function flashRed() {
     const catContainer = document.getElementById('catContainer');
     catContainer.classList.add('flash-red');
@@ -242,31 +246,33 @@ function flashRed() {
 function makeKittyHappy() {
     const cat = window.talkingCat;
     cat.showMessage("I am very happy now!");
-    cat.createHearts();
+    cat.createFloatingEmojis("hearts");
     flashRed();
     cat.repeatInCatVoice("I am very happy now!");
 }
 
 function makeKittySurprised() {
     const cat = window.talkingCat;
-    cat.showMessage("Oh! You surprised me!");
+    cat.showMessage("Oh! You surprised me with chocolates!");
+    cat.createFloatingEmojis("chocolates");
     flashRed();
-    cat.repeatInCatVoice("Oh! You surprised me!");
+    cat.repeatInCatVoice("Oh! You surprised me with chocolates!");
 }
 
 function makeKittySleepy() {
     const cat = window.talkingCat;
-    cat.showMessage("I feel sleepy now.");
+    cat.showMessage("I feel sleepy. Bring me my pillow!");
+    cat.createFloatingEmojis("pillow");
     flashRed();
-    cat.repeatInCatVoice("I feel sleepy now.");
+    cat.repeatInCatVoice("I feel sleepy. Bring me my pillow!");
 }
 
-// Initialize
+// ✅ Initialize
 window.addEventListener('DOMContentLoaded', () => {
     window.talkingCat = new TalkingCat();
 });
 
-// Handle voices loading
+// ✅ Handle voices loading
 window.speechSynthesis.onvoiceschanged = () => {
     console.log('Voices loaded');
 };
