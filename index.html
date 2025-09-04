@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking Cat Game</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="game-container">
+        <h1 class="title">Talking Cat Game </h1>
+        
+        <div class="cat-container" id="catContainer">
+            <div class="cat-body">
+                <div class="cat-head">
+                    <div class="ear left">
+                        <div class="inner-ear"></div>
+                    </div>
+                    <div class="ear right">
+                        <div class="inner-ear"></div>
+                    </div>
+                    
+                    <div class="eye left">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="eye right">
+                        <div class="pupil"></div>
+                    </div>
+                    
+                    <div class="nose"></div>
+                    
+                    <div class="mouth" id="catMouth">
+                        <div class="mouth-line"></div>
+                    </div>
+                    
+                    <div class="whiskers left1"></div>
+                    <div class="whiskers left2"></div>
+                    <div class="whiskers right1"></div>
+                    <div class="whiskers right2"></div>
+                </div>
+                
+                <div class="paws">
+                    <div class="paw"></div>
+                    <div class="paw"></div>
+                    <div class="paw"></div>
+                    <div class="paw"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="speech-bubble" id="speechBubble">
+            <span id="speechText">Hi! Click the microphone and say something to me! 🎤</span>
+        </div>
+
+        <div class="controls">
+            <button class="mic-button" id="micButton"> Talk to Me</button>
+            <div class="status" id="status">Ready to listen! 😸</div>
+        </div>
+
+        <div class="fun-buttons">
+            <button class="fun-button" onclick="makeKittyHappy()">Make me happy! 😸</button>
+            <button class="fun-button" onclick="makeKittySurprised()">Surprise me! 😲</button>
+            <button class="fun-button" onclick="makeKittySleepy()">Make me sleepy 😴</button>
+        </div>
+    </div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
